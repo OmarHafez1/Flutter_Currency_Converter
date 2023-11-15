@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
         future: fetchRates(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -75,9 +75,9 @@ class _HomePageState extends State<HomePage> {
                       height: 40,
                     ),
                     input2,
-                    Spacer(),
+                    const Spacer(),
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 50,
                         horizontal: 30,
                       ),
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                         alignment: Alignment.bottomRight,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 23, vertical: 10)),
                           onPressed: () {
                             double? val = double.tryParse(input1.getText);
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                               );
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             "Calculate",
                             style: TextStyle(
                               fontSize: 25,

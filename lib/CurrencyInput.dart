@@ -3,12 +3,14 @@ import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Currency currency = CurrencyService().findByCode('usd')!;
-
 class CurrencyInput extends StatefulWidget {
-  String text = "";
-  late void Function(String) setText;
+  TextEditingController textEditingController = TextEditingController();
   bool isEnabled;
+  Currency currency = CurrencyService().findByCode('egp')!;
+  String get getText => textEditingController.text;
+  Currency get getCurrency => currency;
+  late void Function(String) setText;
+  late void Function(String) setCurrency;
   CurrencyInput({
     this.isEnabled = true,
     super.key,
@@ -24,7 +26,10 @@ class _CurrencyInputState extends State<CurrencyInput> {
     widget.setText = (String value) {
       setState(
         () {
-          widget.text = value;
+          double? tmp = double.tryParse(value);
+          assert(tmp != null);
+          widget.textEditingController.text =
+              double.parse(tmp!.toStringAsFixed(4)).toString();
         },
       );
     };
@@ -44,10 +49,10 @@ class _CurrencyInputState extends State<CurrencyInput> {
         child: Row(
           children: [
             FlagCurrencyButton(
-              CurrentCurrency: currency,
+              CurrentCurrency: widget.currency,
               CurrencyChanged: (Currency cur) {
                 setState(() {
-                  currency = cur;
+                  widget.currency = cur;
                 });
               },
             ),
@@ -56,9 +61,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
             ),
             Flexible(
               child: TextFormField(
-                controller: TextEditingController(
-                  text: widget.text,
-                ),
+                controller: widget.textEditingController,
                 enabled: widget.isEnabled,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
@@ -75,6 +78,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
                 ],
                 style: const TextStyle(
                   fontSize: 22,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -82,7 +86,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
               width: 12,
             ),
             Text(
-              currency.symbol,
+              widget.currency.symbol,
               style: const TextStyle(
                 fontSize: 20,
               ),

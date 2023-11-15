@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:currency_converter/CurrencyInput.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +21,12 @@ Future<http.Response> fetchRates() {
       'http://api.exchangeratesapi.io/v1/latest?access_key=$API_KEY'));
 }
 
+double calculate(double amount, Currency from, Currency to) {
+  return currency_rates_json["rates"][to.code.toUpperCase()] *
+      amount /
+      currency_rates_json["rates"][from.code.toUpperCase()];
+}
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -30,7 +37,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    CurrencyInput input1, input2;
+    CurrencyInput input1 = CurrencyInput(),
+        input2 = CurrencyInput(
+          isEnabled: false,
+        );
     return FutureBuilder(
         future: fetchRates(),
         builder: (ctx, snapshot) {
@@ -60,13 +70,11 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(
                       height: 70,
                     ),
-                    input1 = CurrencyInput(),
+                    input1,
                     const SizedBox(
                       height: 40,
                     ),
-                    input2 = CurrencyInput(
-                      isEnabled: false,
-                    ),
+                    input2,
                     Spacer(),
                     Padding(
                       padding: EdgeInsets.symmetric(
@@ -80,7 +88,16 @@ class _HomePageState extends State<HomePage> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 23, vertical: 10)),
                           onPressed: () {
-                            print(currency_rates_json["rates"]["EGP"]);
+                            double? val = double.tryParse(input1.getText);
+                            if (val != null) {
+                              input2.setText(
+                                calculate(
+                                  val,
+                                  input1.getCurrency,
+                                  input2.getCurrency,
+                                ).toString(),
+                              );
+                            }
                           },
                           child: Text(
                             "Calculate",

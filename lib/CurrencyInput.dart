@@ -6,7 +6,11 @@ import 'package:flutter/services.dart';
 Currency currency = CurrencyService().findByCode('usd')!;
 
 class CurrencyInput extends StatefulWidget {
-  const CurrencyInput({
+  String text = "";
+  late void Function(String) setText;
+  bool isEnabled;
+  CurrencyInput({
+    this.isEnabled = true,
     super.key,
   });
 
@@ -17,6 +21,14 @@ class CurrencyInput extends StatefulWidget {
 class _CurrencyInputState extends State<CurrencyInput> {
   @override
   Widget build(BuildContext context) {
+    widget.setText = (String value) {
+      setState(
+        () {
+          widget.text = value;
+        },
+      );
+    };
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -44,7 +56,10 @@ class _CurrencyInputState extends State<CurrencyInput> {
             ),
             Flexible(
               child: TextFormField(
-                enabled: false,
+                controller: TextEditingController(
+                  text: widget.text,
+                ),
+                enabled: widget.isEnabled,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   // FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),

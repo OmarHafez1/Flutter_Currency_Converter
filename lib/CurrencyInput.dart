@@ -44,6 +44,7 @@ class _CurrencyInputState extends State<CurrencyInput> {
             ),
             Flexible(
               child: TextFormField(
+                enabled: false,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   // FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),

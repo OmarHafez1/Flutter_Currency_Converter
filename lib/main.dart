@@ -39,6 +39,32 @@ class _HomePageState extends State<HomePage> {
               height: 70,
             ),
             const CurrencyInput(),
+            const SizedBox(
+              height: 40,
+            ),
+            const CurrencyInput(),
+            Spacer(),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 50,
+                horizontal: 30,
+              ),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 23, vertical: 10)),
+                  onPressed: () {},
+                  child: Text(
+                    "Calculate",
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -6,15 +6,17 @@ import 'package:flutter/services.dart';
 class CurrencyInput extends StatefulWidget {
   TextEditingController textEditingController = TextEditingController();
   bool isEnabled;
-  Currency currency = CurrencyService().findByCode('egp')!;
+  String currencyCode = 'usd';
+  Currency currency = CurrencyService().findByCode('usd')!;
   String get getText => textEditingController.text;
   Currency get getCurrency => currency;
   late void Function(String) setText;
   late void Function(String) setCurrency;
   CurrencyInput({
     this.isEnabled = true,
+    this.currencyCode = 'usd',
     super.key,
-  });
+  }) : currency = CurrencyService().findByCode(currencyCode)!;
 
   @override
   State<CurrencyInput> createState() => _CurrencyInputState();
